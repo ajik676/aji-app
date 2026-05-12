@@ -6,31 +6,27 @@ import {
   FaWarehouse,
 } from "react-icons/fa";
 
-// IMPORT DATA JSON
 import products from "../data/products";
 
 export default function ProductDetail() {
-
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // CARI PRODUCT BERDASARKAN ID
   const product = products.find(
     (p) => p.id === Number(id)
   );
 
-  // JIKA PRODUCT TIDAK ADA
   if (!product) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8F9FB]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FB]">
 
-        <h1 className="text-4xl font-bold text-red-500 mb-3">
+        <h1 className="text-4xl font-bold text-red-500 mb-4">
           Product Not Found
         </h1>
 
         <button
           onClick={() => navigate("/product")}
-          className="mt-4 px-5 py-3 bg-green-500 text-white rounded-2xl hover:bg-green-600 transition"
+          className="px-5 py-3 rounded-2xl bg-green-500 text-white hover:bg-green-600 transition"
         >
           Back to Product
         </button>
@@ -39,13 +35,12 @@ export default function ProductDetail() {
     );
   }
 
-  // STOCK STYLE
   const stockStyle =
     product.stock > 20
-      ? "bg-green-100 text-green-700 border border-green-200"
+      ? "bg-green-100 text-green-700"
       : product.stock > 10
-      ? "bg-yellow-100 text-yellow-700 border border-yellow-200"
-      : "bg-red-100 text-red-600 border border-red-200";
+      ? "bg-yellow-100 text-yellow-700"
+      : "bg-red-100 text-red-600";
 
   return (
     <div className="min-h-screen bg-[#F8F9FB] p-6">
@@ -54,7 +49,6 @@ export default function ProductDetail() {
       <div className="flex items-center justify-between mb-8">
 
         <div>
-
           <h1 className="text-3xl font-bold text-gray-800">
             Product Detail
           </h1>
@@ -62,12 +56,11 @@ export default function ProductDetail() {
           <p className="text-gray-400 mt-1">
             Complete information about selected product
           </p>
-
         </div>
 
         <button
           onClick={() => navigate("/product")}
-          className="flex items-center gap-2 bg-white border border-gray-200 px-5 py-3 rounded-2xl shadow-sm hover:bg-gray-50 transition"
+          className="flex items-center gap-2 bg-white border border-gray-200 px-5 py-3 rounded-2xl hover:bg-gray-50 transition"
         >
           <FaArrowLeft />
           Back
@@ -75,55 +68,49 @@ export default function ProductDetail() {
 
       </div>
 
-      {/* CARD */}
-      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+      {/* MAIN CARD */}
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
 
-        {/* TOP SECTION */}
-        <div className="bg-gradient-to-r from-green-500 to-emerald-400 p-10 text-white">
+        {/* TOP */}
+        <div className="grid lg:grid-cols-2 gap-10 p-8">
 
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+          {/* IMAGE */}
+          <div className="bg-[#F8F9FB] rounded-3xl flex items-center justify-center p-6">
 
-            {/* FOTO PRODUCT */}
-            <div className="flex justify-center">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-full max-w-md h-80 object-cover rounded-2xl"
+            />
 
-              <div className="bg-white rounded-3xl p-6 shadow-2xl">
+          </div>
 
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-full max-w-md h-80 object-cover rounded-2xl"
-                />
+          {/* INFO */}
+          <div className="flex flex-col justify-center">
 
-              </div>
+            <span className="text-green-500 font-semibold uppercase tracking-wider text-sm mb-3">
+              {product.category}
+            </span>
 
-            </div>
+            <h1 className="text-5xl font-bold text-gray-800 leading-tight">
+              {product.title}
+            </h1>
 
-            {/* PRODUCT INFO */}
-            <div>
+            <p className="text-gray-400 mt-4 text-lg">
+              Product Code : {product.code}
+            </p>
 
-              <p className="uppercase tracking-widest text-green-100 text-sm mb-3">
-                {product.category}
-              </p>
+            <h2 className="text-4xl font-bold text-green-600 mt-6">
+              Rp {product.price.toLocaleString()}
+            </h2>
 
-              <h1 className="text-5xl font-bold leading-tight">
-                {product.title}
-              </h1>
+            <div className="mt-6">
 
-              <p className="mt-4 text-lg text-green-50">
-                Product Code : {product.code}
-              </p>
-
-              <h2 className="text-4xl font-bold mt-6">
-                Rp {product.price.toLocaleString()}
-              </h2>
-
-              <div className="mt-6">
-                <span
-                  className={`px-5 py-3 rounded-full text-sm font-semibold bg-white ${stockStyle}`}
-                >
-                  {product.stock} Items Available
-                </span>
-              </div>
+              <span
+                className={`px-5 py-3 rounded-xl text-sm font-semibold ${stockStyle}`}
+              >
+                {product.stock} Items Available
+              </span>
 
             </div>
 
@@ -131,15 +118,15 @@ export default function ProductDetail() {
 
         </div>
 
-        {/* CONTENT */}
-        <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* INFO CARD */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 px-8 pb-8">
 
           {/* CATEGORY */}
-          <div className="bg-[#F8F9FB] rounded-2xl p-6 border border-gray-100 hover:shadow-md transition">
+          <div className="bg-[#F8F9FB] rounded-2xl p-5 border border-gray-100">
 
             <div className="flex items-center gap-4">
 
-              <div className="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center text-2xl">
+              <div className="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
                 <FaLayerGroup />
               </div>
 
@@ -149,7 +136,7 @@ export default function ProductDetail() {
                   Category
                 </p>
 
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="font-bold text-gray-800">
                   {product.category}
                 </h2>
 
@@ -160,11 +147,11 @@ export default function ProductDetail() {
           </div>
 
           {/* BRAND */}
-          <div className="bg-[#F8F9FB] rounded-2xl p-6 border border-gray-100 hover:shadow-md transition">
+          <div className="bg-[#F8F9FB] rounded-2xl p-5 border border-gray-100">
 
             <div className="flex items-center gap-4">
 
-              <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl">
+              <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
                 <FaTag />
               </div>
 
@@ -174,7 +161,7 @@ export default function ProductDetail() {
                   Brand
                 </p>
 
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="font-bold text-gray-800">
                   {product.brand}
                 </h2>
 
@@ -185,11 +172,11 @@ export default function ProductDetail() {
           </div>
 
           {/* STOCK */}
-          <div className="bg-[#F8F9FB] rounded-2xl p-6 border border-gray-100 hover:shadow-md transition">
+          <div className="bg-[#F8F9FB] rounded-2xl p-5 border border-gray-100">
 
             <div className="flex items-center gap-4">
 
-              <div className="w-14 h-14 rounded-2xl bg-red-100 text-red-500 flex items-center justify-center text-2xl">
+              <div className="w-12 h-12 rounded-xl bg-red-100 text-red-500 flex items-center justify-center">
                 <FaWarehouse />
               </div>
 
@@ -199,7 +186,7 @@ export default function ProductDetail() {
                   Stock
                 </p>
 
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="font-bold text-gray-800">
                   {product.stock} PCS
                 </h2>
 
@@ -214,13 +201,13 @@ export default function ProductDetail() {
         {/* DESCRIPTION */}
         <div className="px-8 pb-8">
 
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100 rounded-3xl p-8">
+          <div className="bg-[#F8F9FB] rounded-3xl p-7 border border-gray-100">
 
-            <h1 className="text-2xl font-bold text-green-700 mb-4">
+            <h1 className="text-2xl font-bold text-green-600 mb-4">
               Product Information
             </h1>
 
-            <p className="text-gray-600 leading-relaxed text-lg">
+            <p className="text-gray-600 leading-relaxed">
 
               <span className="font-semibold text-gray-800">
                 {product.title}

@@ -13,6 +13,9 @@ const Product = lazy(() => import("./pages/Product"));
 // ✅ PRODUCT DETAIL
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 
+// ✅ CUSTOMER DETAIL
+const CustomerDetail = lazy(() => import("./pages/CustomerDetail"));
+
 const AddCustomer = lazy(() => import("./pages/AddCustomer"));
 const AddOrder = lazy(() => import("./pages/AddOrder"));
 const AddProduct = lazy(() => import("./pages/AddProduct"));
@@ -29,31 +32,76 @@ const AuthLayout = lazy(() => import("./layouts/AuthLayout"));
 function App() {
   return (
     <Suspense fallback={<Loading />}>
+
       <Routes>
 
-        {/* Auth */}
+        {/* AUTH */}
         <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot" element={<Forgot />} />
+
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+
+          <Route
+            path="/register"
+            element={<Register />}
+          />
+
+          <Route
+            path="/forgot"
+            element={<Forgot />}
+          />
+
         </Route>
 
-        {/* Main */}
+        {/* MAIN */}
         <Route element={<MainLayout />}>
 
-          <Route path="/" element={<Dashboard />} />
+          {/* DASHBOARD */}
+          <Route
+            path="/"
+            element={<Dashboard />}
+          />
 
-          {/* Customers */}
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/customers/add" element={<AddCustomer />} />
+          {/* CUSTOMERS */}
+          <Route
+            path="/customers"
+            element={<Customers />}
+          />
 
-          {/* Orders */}
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/orders/add" element={<AddOrder />} />
+          <Route
+            path="/customers/add"
+            element={<AddCustomer />}
+          />
 
-          {/* Product */}
-          <Route path="/product" element={<Product />} />
-          <Route path="/product/add" element={<AddProduct />} />
+          {/* ✅ CUSTOMER DETAIL */}
+          <Route
+            path="/customers/:id"
+            element={<CustomerDetail />}
+          />
+
+          {/* ORDERS */}
+          <Route
+            path="/orders"
+            element={<Orders />}
+          />
+
+          <Route
+            path="/orders/add"
+            element={<AddOrder />}
+          />
+
+          {/* PRODUCT */}
+          <Route
+            path="/product"
+            element={<Product />}
+          />
+
+          <Route
+            path="/product/add"
+            element={<AddProduct />}
+          />
 
           {/* ✅ PRODUCT DETAIL */}
           <Route
@@ -61,16 +109,31 @@ function App() {
             element={<ProductDetail />}
           />
 
-          {/* Error */}
-          <Route path="/400" element={<ErrorPage code="400" />} />
-          <Route path="/401" element={<ErrorPage code="401" />} />
-          <Route path="/403" element={<ErrorPage code="403" />} />
+          {/* ERROR */}
+          <Route
+            path="/400"
+            element={<ErrorPage code="400" />}
+          />
 
-          <Route path="*" element={<ErrorPage code="404" />} />
+          <Route
+            path="/401"
+            element={<ErrorPage code="401" />}
+          />
+
+          <Route
+            path="/403"
+            element={<ErrorPage code="403" />}
+          />
+
+          <Route
+            path="*"
+            element={<ErrorPage code="404" />}
+          />
 
         </Route>
 
       </Routes>
+
     </Suspense>
   );
 }
