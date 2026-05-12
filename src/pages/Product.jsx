@@ -1,26 +1,26 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   FaSearch,
   FaChevronLeft,
   FaChevronRight,
   FaEye,
   FaTrashAlt,
-  FaShoppingCart,
+  FaBoxOpen,
 } from "react-icons/fa";
 
 // IMPORT JSON DATA
-import orders from "../data/orders";
+import products from "../data/products";
 
 const ITEMS_PER_PAGE = 5;
 
-// ✅ Status Badge
-function StatusBadge({ status }) {
+// ✅ Stock Badge
+function StockBadge({ stock }) {
 
   const styles =
-    status === "Completed"
+    stock > 20
       ? "bg-green-100 text-green-700 border border-green-200"
-      : status === "Pending"
+      : stock > 10
       ? "bg-yellow-100 text-yellow-700 border border-yellow-200"
       : "bg-red-100 text-red-600 border border-red-200";
 
@@ -28,7 +28,7 @@ function StatusBadge({ status }) {
     <span
       className={`px-3 py-1 rounded-full text-xs font-semibold ${styles}`}
     >
-      {status}
+      {stock} Stock
     </span>
   );
 }
@@ -36,10 +36,12 @@ function StatusBadge({ status }) {
 // ✅ Table Row
 function TableRow({
   id,
-  customer,
-  total,
-  status,
-  date,
+  title,
+  code,
+  category,
+  brand,
+  price,
+  stock,
 }) {
   return (
     <tr className="border-b border-gray-100 hover:bg-green-50/40 transition duration-200">
@@ -51,27 +53,41 @@ function TableRow({
       <td className="px-6 py-5">
 
         <div>
-          <h1 className="font-semibold text-gray-800">
-            {customer}
-          </h1>
+
+          {/* LINK KE PRODUCT DETAIL */}
+          <Link
+            to={`/products/${id}`}
+            className="font-semibold text-gray-800 hover:text-green-600 transition"
+          >
+            {title}
+          </Link>
 
           <p className="text-xs text-gray-400">
-            Active Customer
+            Product Item
           </p>
+
         </div>
 
       </td>
 
-      <td className="px-6 py-5 text-gray-600 font-medium">
-        Rp {total.toLocaleString()}
-      </td>
-
-      <td className="px-6 py-5">
-        <StatusBadge status={status} />
+      <td className="px-6 py-5 text-gray-500">
+        {code}
       </td>
 
       <td className="px-6 py-5 text-gray-500">
-        {date}
+        {category}
+      </td>
+
+      <td className="px-6 py-5 text-gray-500">
+        {brand}
+      </td>
+
+      <td className="px-6 py-5 text-gray-700 font-medium">
+        Rp {price.toLocaleString()}
+      </td>
+
+      <td className="px-6 py-5">
+        <StockBadge stock={stock} />
       </td>
 
       <td className="px-6 py-5">
@@ -85,7 +101,7 @@ function TableRow({
 
           <button className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium transition">
             <FaTrashAlt />
-            Cancel
+            Delete
           </button>
 
         </div>
@@ -96,7 +112,7 @@ function TableRow({
   );
 }
 
-export default function Orders() {
+export default function Product() {
 
   const navigate = useNavigate();
 
@@ -104,8 +120,8 @@ export default function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
 
   // ✅ FILTER DATA
-  const filtered = orders.filter((o) =>
-    o.customer.toLowerCase().includes(search.toLowerCase())
+  const filtered = products.filter((p) =>
+    p.title.toLowerCase().includes(search.toLowerCase())
   );
 
   // ✅ PAGINATION
@@ -129,21 +145,21 @@ export default function Orders() {
         <div>
 
           <h1 className="text-3xl font-bold text-gray-800">
-            Orders
+            Product
           </h1>
 
           <p className="text-sm text-gray-400 mt-1">
-            Manage your orders data easily
+            Manage your product data easily
           </p>
 
         </div>
 
         <button
-          onClick={() => navigate("/orders/add")}
+          onClick={() => navigate("/product/add")}
           className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-2xl shadow-md transition"
         >
-          <FaShoppingCart />
-          Add Order
+          <FaBoxOpen />
+          Add Product
         </button>
 
       </div>
@@ -153,7 +169,7 @@ export default function Orders() {
 
         <input
           type="text"
-          placeholder="Search orders..."
+          placeholder="Search product..."
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -176,23 +192,31 @@ export default function Orders() {
             <tr>
 
               <th className="px-6 py-5 font-semibold">
-                Order ID
+                ID
               </th>
 
               <th className="px-6 py-5 font-semibold">
-                Customer
+                Product
               </th>
 
               <th className="px-6 py-5 font-semibold">
-                Total
+                Code
               </th>
 
               <th className="px-6 py-5 font-semibold">
-                Status
+                Category
               </th>
 
               <th className="px-6 py-5 font-semibold">
-                Date
+                Brand
+              </th>
+
+              <th className="px-6 py-5 font-semibold">
+                Price
+              </th>
+
+              <th className="px-6 py-5 font-semibold">
+                Stock
               </th>
 
               <th className="px-6 py-5 font-semibold">
@@ -205,18 +229,18 @@ export default function Orders() {
 
           <tbody>
 
-            {currentData.map((o) => (
-              <TableRow key={o.id} {...o} />
+            {currentData.map((p) => (
+              <TableRow key={p.id} {...p} />
             ))}
 
             {currentData.length === 0 && (
               <tr>
 
                 <td
-                  colSpan="6"
+                  colSpan="8"
                   className="text-center py-12 text-gray-400"
                 >
-                  No orders found
+                  No product found
                 </td>
 
               </tr>

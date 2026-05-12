@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaSearch,
@@ -9,153 +9,228 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 
+// IMPORT DATA JSON
+import customers from "../data/customers";
+
 const ITEMS_PER_PAGE = 5;
 
+// ✅ Loyalty Badge
 function LoyaltyBadge({ loyalty }) {
+
   const styles =
     loyalty === "Gold"
-      ? "bg-yellow-100 text-yellow-600"
+      ? "bg-yellow-100 text-yellow-700 border border-yellow-200"
       : loyalty === "Silver"
-      ? "bg-gray-200 text-gray-600"
-      : "bg-orange-100 text-orange-600";
+      ? "bg-slate-100 text-slate-600 border border-slate-200"
+      : "bg-orange-100 text-orange-600 border border-orange-200";
 
   return (
-    <span className={`px-3 py-1 rounded-full text-xs font-medium ${styles}`}>
+    <span
+      className={`px-3 py-1 rounded-full text-xs font-semibold ${styles}`}
+    >
       {loyalty}
     </span>
   );
 }
 
-function TableRow({ id, name, email, phone, loyalty }) {
+// ✅ Table Row
+function TableRow({
+  id,
+  name,
+  email,
+  phone,
+  loyalty,
+}) {
   return (
-    <tr className="border-t hover:bg-gray-50 transition">
-      <td className="px-6 py-4 text-gray-500">#{id}</td>
+    <tr className="border-b border-gray-100 hover:bg-green-50/40 transition duration-200">
 
-      <td className="px-6 py-4 font-medium text-gray-800">{name}</td>
+      <td className="px-6 py-5 text-gray-500 font-medium">
+        #{id}
+      </td>
 
-      <td className="px-6 py-4 text-gray-500">{email}</td>
+      <td className="px-6 py-5">
+        <div>
+          <h1 className="font-semibold text-gray-800">
+            {name}
+          </h1>
 
-      <td className="px-6 py-4 text-gray-500">{phone}</td>
+          <p className="text-xs text-gray-400">
+            Customer Member
+          </p>
+        </div>
+      </td>
 
-      <td className="px-6 py-4">
+      <td className="px-6 py-5 text-gray-500">
+        {email}
+      </td>
+
+      <td className="px-6 py-5 text-gray-500">
+        {phone}
+      </td>
+
+      <td className="px-6 py-5">
         <LoyaltyBadge loyalty={loyalty} />
       </td>
 
-      <td className="px-6 py-4">
-        <div className="flex gap-3">
-          <button className="text-blue-500 hover:underline text-sm flex items-center gap-1">
-            <FaEye /> View
+      <td className="px-6 py-5">
+        <div className="flex items-center gap-4">
+
+          <button className="flex items-center gap-1 text-blue-500 hover:text-blue-600 text-sm font-medium transition">
+            <FaEye />
+            View
           </button>
 
-          <button className="text-red-500 hover:underline text-sm flex items-center gap-1">
-            <FaTrashAlt /> Delete
+          <button className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium transition">
+            <FaTrashAlt />
+            Delete
           </button>
+
         </div>
       </td>
+
     </tr>
   );
 }
 
 export default function Customers() {
+
   const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const data = useMemo(() => {
-    return Array.from({ length: 30 }, (_, i) => ({
-      id: i + 1,
-      name: ["Rafi", "Andi", "Siti", "Budi"][i % 4] + " " + (i + 1),
-      email: `user${i + 1}@email.com`,
-      phone: `08123${100000 + i}`,
-      loyalty: ["Bronze", "Silver", "Gold"][i % 3],
-    }));
-  }, []);
-
-  const filtered = data.filter((c) =>
+  // ✅ FILTER DATA
+  const filtered = customers.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  // ✅ PAGINATION
+  const totalPages = Math.ceil(
+    filtered.length / ITEMS_PER_PAGE
+  );
+
   const start = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentData = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+  const currentData = filtered.slice(
+    start,
+    start + ITEMS_PER_PAGE
+  );
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-[#F8F9FB] min-h-screen">
 
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-8">
+
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-3xl font-bold text-gray-800">
             Customers
           </h1>
-          <p className="text-sm text-gray-400">
-            Manage your customers data
+
+          <p className="text-sm text-gray-400 mt-1">
+            Manage your customers data easily
           </p>
         </div>
 
         <button
           onClick={() => navigate("/customers/add")}
-          className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl shadow"
+          className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-2xl shadow-md transition"
         >
-          <FaUserPlus /> Add Customer
+          <FaUserPlus />
+          Add Customer
         </button>
+
       </div>
 
       {/* SEARCH */}
-      <div className="relative mb-5 w-80">
+      <div className="relative mb-6 w-96">
+
         <input
+          type="text"
           placeholder="Search customer..."
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
             setCurrentPage(1);
           }}
-          className="w-full pl-10 pr-4 py-2 border rounded-xl focus:ring-2 focus:ring-green-400 outline-none"
+          className="w-full bg-white pl-11 pr-4 py-3 border border-gray-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none"
         />
-        <FaSearch className="absolute left-3 top-3 text-gray-400 text-sm" />
+
+        <FaSearch className="absolute left-4 top-4 text-gray-400 text-sm" />
+
       </div>
 
-      {/* TABLE CARD */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      {/* TABLE */}
+      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+
         <table className="w-full text-left">
-          <thead className="bg-gray-50 text-gray-500 text-sm">
+
+          <thead className="bg-gradient-to-r from-green-50 to-white text-gray-600 text-sm">
+
             <tr>
-              <th className="px-6 py-4">ID</th>
-              <th className="px-6 py-4">Name</th>
-              <th className="px-6 py-4">Email</th>
-              <th className="px-6 py-4">Phone</th>
-              <th className="px-6 py-4">Loyalty</th>
-              <th className="px-6 py-4">Action</th>
+              <th className="px-6 py-5 font-semibold">
+                ID
+              </th>
+
+              <th className="px-6 py-5 font-semibold">
+                Customer
+              </th>
+
+              <th className="px-6 py-5 font-semibold">
+                Email
+              </th>
+
+              <th className="px-6 py-5 font-semibold">
+                Phone
+              </th>
+
+              <th className="px-6 py-5 font-semibold">
+                Loyalty
+              </th>
+
+              <th className="px-6 py-5 font-semibold">
+                Action
+              </th>
             </tr>
+
           </thead>
 
           <tbody>
+
             {currentData.map((c) => (
               <TableRow key={c.id} {...c} />
             ))}
 
             {currentData.length === 0 && (
               <tr>
-                <td colSpan="6" className="text-center py-10 text-gray-400">
+                <td
+                  colSpan="6"
+                  className="text-center py-12 text-gray-400"
+                >
                   No customers found
                 </td>
               </tr>
             )}
+
           </tbody>
+
         </table>
+
       </div>
 
       {/* PAGINATION */}
-      <div className="flex justify-between items-center mt-5">
+      <div className="flex justify-between items-center mt-6">
+
         <p className="text-sm text-gray-500">
-          Page {currentPage} of {totalPages}
+          Showing page {currentPage} of {totalPages}
         </p>
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
+
           <button
             onClick={() => setCurrentPage((p) => p - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-1 border rounded disabled:opacity-50"
+            className="w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 disabled:opacity-50 transition"
           >
             <FaChevronLeft />
           </button>
@@ -163,12 +238,15 @@ export default function Customers() {
           <button
             onClick={() => setCurrentPage((p) => p + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-1 border rounded disabled:opacity-50"
+            className="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-xl shadow-sm hover:bg-green-600 disabled:opacity-50 transition"
           >
             <FaChevronRight />
           </button>
+
         </div>
+
       </div>
+
     </div>
   );
 }

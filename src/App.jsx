@@ -8,8 +8,15 @@ import Loading from "./components/Loading";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Customers = lazy(() => import("./pages/Customers"));
 const Orders = lazy(() => import("./pages/Orders"));
+const Product = lazy(() => import("./pages/Product"));
+
+// ✅ PRODUCT DETAIL
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
+
 const AddCustomer = lazy(() => import("./pages/AddCustomer"));
 const AddOrder = lazy(() => import("./pages/AddOrder"));
+const AddProduct = lazy(() => import("./pages/AddProduct"));
+
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -33,19 +40,34 @@ function App() {
 
         {/* Main */}
         <Route element={<MainLayout />}>
+
           <Route path="/" element={<Dashboard />} />
 
+          {/* Customers */}
           <Route path="/customers" element={<Customers />} />
           <Route path="/customers/add" element={<AddCustomer />} />
 
+          {/* Orders */}
           <Route path="/orders" element={<Orders />} />
           <Route path="/orders/add" element={<AddOrder />} />
 
+          {/* Product */}
+          <Route path="/product" element={<Product />} />
+          <Route path="/product/add" element={<AddProduct />} />
+
+          {/* ✅ PRODUCT DETAIL */}
+          <Route
+            path="/products/:id"
+            element={<ProductDetail />}
+          />
+
+          {/* Error */}
           <Route path="/400" element={<ErrorPage code="400" />} />
           <Route path="/401" element={<ErrorPage code="401" />} />
           <Route path="/403" element={<ErrorPage code="403" />} />
 
           <Route path="*" element={<ErrorPage code="404" />} />
+
         </Route>
 
       </Routes>
