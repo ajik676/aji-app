@@ -10,6 +10,9 @@ const Customers = lazy(() => import("./pages/Customers"));
 const Orders = lazy(() => import("./pages/Orders"));
 const Product = lazy(() => import("./pages/Product"));
 
+// NEW: Fitur XYZ page
+const FiturXyz = lazy(() => import("./pages/FiturXyz"));
+
 // ✅ PRODUCT DETAIL
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 
@@ -32,108 +35,55 @@ const AuthLayout = lazy(() => import("./layouts/AuthLayout"));
 function App() {
   return (
     <Suspense fallback={<Loading />}>
-
       <Routes>
-
         {/* AUTH */}
         <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
 
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+          <Route path="/register" element={<Register />} />
 
-          <Route
-            path="/register"
-            element={<Register />}
-          />
-
-          <Route
-            path="/forgot"
-            element={<Forgot />}
-          />
-
+          <Route path="/forgot" element={<Forgot />} />
         </Route>
 
         {/* MAIN */}
         <Route element={<MainLayout />}>
-
           {/* DASHBOARD */}
-          <Route
-            path="/"
-            element={<Dashboard />}
-          />
+          <Route path="/" element={<Dashboard />} />
 
           {/* CUSTOMERS */}
-          <Route
-            path="/customers"
-            element={<Customers />}
-          />
+          <Route path="/customers" element={<Customers />} />
 
-          <Route
-            path="/customers/add"
-            element={<AddCustomer />}
-          />
+          <Route path="/customers/add" element={<AddCustomer />} />
 
           {/* ✅ CUSTOMER DETAIL */}
-          <Route
-            path="/customers/:id"
-            element={<CustomerDetail />}
-          />
+          <Route path="/customers/:id" element={<CustomerDetail />} />
 
           {/* ORDERS */}
-          <Route
-            path="/orders"
-            element={<Orders />}
-          />
+          <Route path="/orders" element={<Orders />} />
 
-          <Route
-            path="/orders/add"
-            element={<AddOrder />}
-          />
+          <Route path="/orders/add" element={<AddOrder />} />
 
           {/* PRODUCT */}
-          <Route
-            path="/product"
-            element={<Product />}
-          />
+          <Route path="/product" element={<Product />} />
 
-          <Route
-            path="/product/add"
-            element={<AddProduct />}
-          />
+          <Route path="/product/add" element={<AddProduct />} />
 
           {/* ✅ PRODUCT DETAIL */}
-          <Route
-            path="/products/:id"
-            element={<ProductDetail />}
-          />
+          <Route path="/products/:id" element={<ProductDetail />} />
+
+          {/* FITUR XYZ */}
+          <Route path="/fitur-xyz" element={<FiturXyz />} />
 
           {/* ERROR */}
-          <Route
-            path="/400"
-            element={<ErrorPage code="400" />}
-          />
+          <Route path="/400" element={<ErrorPage code="400" />} />
 
-          <Route
-            path="/401"
-            element={<ErrorPage code="401" />}
-          />
+          <Route path="/401" element={<ErrorPage code="401" />} />
 
-          <Route
-            path="/403"
-            element={<ErrorPage code="403" />}
-          />
+          <Route path="/403" element={<ErrorPage code="403" />} />
 
-          <Route
-            path="*"
-            element={<ErrorPage code="404" />}
-          />
-
+          <Route path="*" element={<ErrorPage code="404" />} />
         </Route>
-
       </Routes>
-
     </Suspense>
   );
 }

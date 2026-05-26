@@ -4,10 +4,10 @@ import {
   FaList,
   FaHeadphones,
   FaBoxOpen,
+  FaFingerprint,
 } from "react-icons/fa";
 
 export default function Sidebar() {
-
   // function untuk styling active
   const menuClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-xl transition cursor-pointer
@@ -22,23 +22,18 @@ export default function Sidebar() {
 
   return (
     <div className="w-64 h-screen bg-[#F8F9FB] flex flex-col justify-between px-6 py-6">
-
       {/* Logo */}
       <div>
-
         <div className="mb-10">
           <h1 className="text-5xl font-bold text-gray-800">
             Sedap<span className="text-green-500">.</span>
           </h1>
 
-          <p className="text-sm text-gray-400">
-            Modern Admin Dashboard
-          </p>
+          <p className="text-sm text-gray-400">Modern Admin Dashboard</p>
         </div>
 
         {/* Menu */}
         <ul className="space-y-3">
-
           <li>
             <NavLink to="/" end className={menuClass}>
               {({ isActive }) => (
@@ -84,14 +79,23 @@ export default function Sidebar() {
             </NavLink>
           </li>
 
+          {/* FITUR XYZ MENU */}
+          <li>
+            <NavLink to="/fitur-xyz" className={menuClass}>
+              {({ isActive }) => (
+                <>
+                  <FaFingerprint className={iconClass(isActive)} />
+                  Fitur Xyz
+                </>
+              )}
+            </NavLink>
+          </li>
         </ul>
       </div>
 
       {/* Footer */}
       <div>
-
         <div className="bg-green-500 rounded-2xl p-4 text-white flex justify-between items-center">
-
           <div>
             <p className="text-sm leading-tight">
               Please organize your menus through button below!
@@ -107,17 +111,13 @@ export default function Sidebar() {
             alt="customer support"
             className="w-16 h-16 rounded-full object-cover"
           />
-
         </div>
 
         <p className="text-xs text-gray-400 mt-6">
           Sedap Restaurant Admin Dashboard
         </p>
 
-        <p className="text-xs text-gray-300">
-          © 2025 All Right Reserved
-        </p>
-
+        <p className="text-xs text-gray-300">© 2025 All Right Reserved</p>
       </div>
     </div>
   );
