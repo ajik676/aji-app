@@ -128,6 +128,13 @@ export default function FiturXyz() {
     <div className="p-6 bg-[#F8F9FB] min-h-screen">
       <PageHeader title="Fitur Xyz" breadcrumb={["Dashboard", "Order List"]} />
 
+      {/* Button variants demo (outline, ghost, destructive) */}
+      <div className="mt-4 mb-6 flex items-center gap-3">
+        <Button variant="outline">Batal</Button>
+        <Button variant="ghost">Batal</Button>
+        <Button variant="destructive">Batal</Button>
+      </div>
+
       <div className="mt-6">
         {Array.from({ length: 10 }).map((_, i) => (
           <SampleTable key={i} index={i + 1} />
